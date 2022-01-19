@@ -1,0 +1,99 @@
+=================================================
+ New Version Information for the Weather Utility
+=================================================
+
+:Copyright: (c) 2006-2020 Jeremy Stanley <fungi@yuggoth.org>. Permission
+            to use, copy, modify, and distribute this software is
+            granted under terms provided in the LICENSE file distributed
+            with this software.
+
+.. contents::
+
+2.4 Release
+-----------
+This is planned to be the last release supporting Python 2; starting
+with the 3.0.0 release, this software will only be usable with Python
+3.5 and later.
+
+Refreshed correlation sets and data sources including updating to 2019
+US Census locations and incorporating public domain airport information
+from the wonderful ourairports.com community, stopped using the long
+defunct metar.tbl and zonecatalog.curr.tar files, switched to HTTPS
+protocol since all the URLs had started redirecting from HTTP to HTTPS
+anyway, added functionality for fetching forecasts from HTML pages where
+they're wrapped in preformat tags and included a new forecast zone for
+the Hong Kong Observatory using this, fixed a few bugs when running
+under recent Python 3 versions.
+
+2.3 Release
+-----------
+Fixed a regression in the correlate function which reintroduced the
+wrong (old) URLs for zone-specific data sources, and corrected the
+entries in the zones file accordingly.
+
+2.2 Release
+-----------
+Fixed a bug where the setpath search order was effectively being
+reversed.
+
+Updated correlation data is included based on newer 2015 Census data and
+2016 NWS station and zone lists.
+
+2.1 Release
+-----------
+The old http://weather.noaa.gov/pub site was deprecated and as of August
+23 subsequently removed from service. Correlation data files have been
+updated to use the working http://tgftp.nws.noaa.gov URL instead.
+
+Updated correlation data is included based on newer 2014 Census data.
+
+The correlation data rebuilding process has been improved and more
+thoroughly documented.
+
+Radian floats in correlation data are now truncated to 7 decimal places,
+significantly reducing rounding error fuzz against future data file
+updates.
+
+The /etc/weather/weatherrc file mentioned in documentation is now
+properly read.
+
+2.0 Release
+-----------
+The 2.0 release involves a major rewrite of the underlying code and
+addition of large volumes of previously-unneeded location correlation
+data. In the Spring of 2011 the USA NOAA/NWS made significant changes to
+the way they organized and published forecast data such that it could
+no longer be supported by design assumptions inherent within this
+utility. Attempts were made to preserve backward compatability with 1.x
+command-line usage and configuration file formats where possible, but
+some regressions are unfortunately unavoidable. The aurl, city, flines,
+furl, id, murl, st and zones options have been removed. Minimal logic
+was retained to recognize and continue supporting limited use of city,
+id and st in configuration files, though these are deprecated for
+eventual removal in a future release.
+
+On a positive note, this provided an opportunity to design out
+some reported bugs and add in numerous requested features. Highlights
+include:
+
+ * Because NOAA/NWS now treats forecast data in the same way as alerts,
+   the alert reporting features are now much better integrated and no
+   longer considered a beta test.
+
+ * The lack of memorable alert/forecast zone coding in the new scheme
+   drove development of intelligent search functionality, allowing users
+   to find stations and zones through a variety of methods like place
+   names, IATA/FAA/ICAO/FIPS/ZIP codes and even raw coordinates.
+
+ * To reduce unnecessary load on NOAA/NWS servers, the utility now
+   caches retrieved data for a configurable period of time.
+
+ * Airport code lists are no longer maintained in configuration (though
+   they are still easily overridden through configuration), and are
+   instead now separately managed in a manner similar to the other
+   pregenerated correlation data.
+
+Worth noting, however, is that the new forecast data publication format
+(now essentially identical to the alert format) is all-caps freeform
+prose, and not easily parsed as a result. Due to the lengthy nature of
+this output, piping it through a pager is highly recommended.
